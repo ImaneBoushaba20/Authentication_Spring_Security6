@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/trainingDb
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      #update + commenter le Bean
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: imanebsh14@gmail.com
+    password: ouqlhhvcbefxshqt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8085
+  #ssl:
+   # enabled: true
+   # key-store-type: PKCS12
+   # key-store: classpath:server.p12
+   # key-store-password: 111111
+   # key-alias: tomcat
+
+
+admin:
+
+  password: null
+

@@ -30,7 +30,7 @@ public class ManageUserService {
 
         User user = userRepository.findById(id).orElse(null);
         if(user == null){
-            return new Message("user not exist","400");
+            return new Message("user not exist","400" , null);
         }
         user.setFullName(updateRequest.getFullName());
         user.setEmail(updateRequest.getEmail());
@@ -42,7 +42,7 @@ public class ManageUserService {
 
         System.out.println("updateddddddd");
         userRepository.save(user);
-        return new Message("user updated","200");
+        return new Message("user updated","200" , null);
     }
 
 
@@ -50,6 +50,6 @@ public class ManageUserService {
 
 
         userRepository.deleteById(id);
-        return new Message("user deleted","200");
+        return new Message("user deleted","200" , null);
     }
 }

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/manage/")
 @RequiredArgsConstructor
@@ -29,9 +31,12 @@ public class ManageUserAccount {
 
     @PostMapping("register")
     public Message register(@RequestBody RegisterRequest auth, final HttpServletRequest request){
+
+        System.out.println("coucou");
+
         User user = authenticationService.register(auth);
         pubEvent.publishEvent(new RegistrationCompleteEvent(user, applicationUrl(request)));
-        return new Message(" Please, check your email for to complete your registration","200");
+        return new Message(" Please, check your email for to complete your registration","200" , user.getRoles());
 
     }
 

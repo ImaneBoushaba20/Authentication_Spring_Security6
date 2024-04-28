@@ -14,7 +14,7 @@ public class ExceptionHandlerMessage {
 
     @ExceptionHandler(UserAlreadyExists.class)
     public ResponseEntity<Message> handleUserAlreadyExistsException(UserAlreadyExists ex) {
-        Message message = new Message(ex.getMessage(),"400");
+        Message message = new Message(ex.getMessage(),"400" , null);
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }

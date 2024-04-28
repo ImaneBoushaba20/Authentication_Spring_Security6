@@ -34,7 +34,7 @@ public class AuthenticationService {
 
         User u = userRepopsitory.findByEmail(request.getEmail()).get();
         if (!u.isAccountEnabled()) {
-            return new Message("user not actived yet. Please Check your email we already send you a message activation ", "404");
+            return new Message("user not actived yet. Please Check your email we already send you a message activation ", "404" , "no role");
         }
 
         authenticationManager.authenticate(
@@ -51,7 +51,7 @@ public class AuthenticationService {
 
         tokenRepository.save(new Token(null,token,false,false,userRepopsitory.findByEmail(request.getEmail()).get()));
 
-        return new Message(token, "200");
+        return new Message(token, "200" , u.getRoles());
 
     }
 
@@ -95,9 +95,9 @@ public class AuthenticationService {
         if (user.isPresent()) {
             emailService.sendCodeReNewPassword(user.get());
 
-            return ResponseEntity.ok(new Message("Code sent to Retieve you accound please verify yuo email !!", "200"));
+            return ResponseEntity.ok(new Message("Code sent to Retieve you accound please verify yuo email !!", "200" , null));
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("user Not Exist with this email", "404"));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("user Not Exist with this email", "404", null));
         }
     }
 
@@ -106,11 +106,11 @@ public class AuthenticationService {
 
         if (account.isPresent()) {
             if (account.get().getUser().getEmail().equals(request.getEmail())) {
-                return ResponseEntity.ok(new Message("code success now enter a new Password", "200"));
+                return ResponseEntity.ok(new Message("code success now enter a new Password", "200" , null));
             }
 
         }
-        return ResponseEntity.ok(new Message("code wrong !!", "404"));
+        return ResponseEntity.ok(new Message("code wrong !!", "404" ,null));
 
     }
 
@@ -121,24 +121,24 @@ public class AuthenticationService {
         if (u.isPresent()) {
             Optional<RetrieveAccount> r = repository.findByCode(request.getCode());
             if (!r.get().getUser().getEmail().equals(u.get().getEmail()))
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("Wrong code please before you try to Change password Enter a valid code that sent in your email ", "404"));
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("Wrong code please before you try to Change password Enter a valid code that sent in your email ", "404" , null));
 
             if (request.getPassword().equals(request.getConfirmationPassword())) {
                 if (u.get().getPassword().equals(request.getPassword()))
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("Password is already exist your acount !! please try another password", "404"));
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("Password is already exist your acount !! please try another password", "404" , null));
                 else {
                     User user = u.get();
                     user.setPassword(passwordEncoder.encode(request.getPassword()));
                     userRepopsitory.save(user);
                    // repository.deleteById(r.get().getId());
-                    return ResponseEntity.ok(new Message("Password Changed success !!", "200"));
+                    return ResponseEntity.ok(new Message("Password Changed success !!", "200" , null));
 
                 }
-            } else return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("Password missMatch !!", "404"));
+            } else return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("Password missMatch !!", "404" , null));
 
 
         }
-        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("User not Exist", "404"));
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("User not Exist", "404" , null));
 
 
     }

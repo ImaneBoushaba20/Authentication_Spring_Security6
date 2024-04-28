@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class Message {
     private String Content ;
     private String statusCode ;
+    private String role;
 }
